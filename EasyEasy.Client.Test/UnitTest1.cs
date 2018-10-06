@@ -11,8 +11,7 @@ namespace EasyEasy.Client.Test
         [TestMethod]
         public void TestMethod1()
         {
-            var client = new Client("http://localhost:3333", "9013c822-ca97-45ee-8724-4535e959149c"
-                );
+            var client = new Client("http://localhost:3333", "9013c822-ca97-45ee-8724-4535e959149c");
 
             var cat = new Cat()
             {
@@ -23,7 +22,7 @@ namespace EasyEasy.Client.Test
             var id = client.AddAsync(cat).Result;
             Assert.IsNotNull(id);
 
-            cat = client.GetOne<Cat>(id).Result;
+            cat = client.GetOneAsync<Cat>(id).Result;
 
             Assert.IsNotNull(cat);
             Assert.IsNotNull(cat.Id);
@@ -31,12 +30,14 @@ namespace EasyEasy.Client.Test
             cat.Age = 1.7;
             client.UpdateAsync(cat).Wait();
 
-            var cats = client.Get<Cat>(new { }).Result;
-            cats = client.Get<Cat>(new { age=1.5 }).Result;
-            cats = client.Get<Cat>(new { age_gte=1.5 }).Result;
-            cats = client.Get<Cat>(new { name_like="Sa*" }).Result;
+            var cats = client.GetAsync<Cat>(new { }).Result;
+            cats = client.GetAsync<Cat>(new { age = 1.5 }).Result;
+            cats = client.GetAsync<Cat>(new { age_gte = 1.5 }).Result;
+            cats = client.GetAsync<Cat>(new { name_like = "Sa*" }).Result;
 
-            client.Delete<Cat>(cat.Id).Wait();
+            cats = client.GetAsync<Cat>(new { _start = 10, _count = 10 }).Result;
+
+            client.DeleteAsync<Cat>(cat.Id).Wait();
         }
     }
 

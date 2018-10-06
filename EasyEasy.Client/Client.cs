@@ -74,7 +74,7 @@ namespace EasyEasy.Client
 
         public async Task UpdateAsync<T>(T obj) => await UpdateAsync(obj, typeof(T).Name.ToLower());
 
-        public async Task<ItemsCollection<T>> Get<T>(string entityName, object filters) where T:class
+        public async Task<ItemsCollection<T>> GetAsync<T>(string entityName, object filters) where T:class
         {
             var filteringStr = String.Join("&",
                 filters.GetType().GetProperties().Select(p => p.Name.ToLower() + "=" + ConvertToString(p.GetValue(filters)).ToString()));
@@ -86,25 +86,25 @@ namespace EasyEasy.Client
             return new ItemsCollection<T>(collectionResponse.items, collectionResponse.total);
         }
 
-        public async Task<ItemsCollection<T>> Get<T>(object filters) where T:class
-            => await Get<T>(typeof(T).Name.ToLower(), filters);
+        public async Task<ItemsCollection<T>> GetAsync<T>(object filters) where T:class
+            => await GetAsync<T>(typeof(T).Name.ToLower(), filters);
 
-        public async Task<T> GetOne<T>(string entityName, string id)
+        public async Task<T> GetOneAsync<T>(string entityName, string id)
         {
             var responseStr = await _http.GetStringAsync(GetUrl(entityName) + "/" + id);
 
             return JsonConvert.DeserializeObject<T>(responseStr, _serializationSetting);
         }
 
-        public async Task<T> GetOne<T>(string id) => await GetOne<T>(typeof(T).Name.ToLower(), id);
+        public async Task<T> GetOneAsync<T>(string id) => await GetOneAsync<T>(typeof(T).Name.ToLower(), id);
 
-        public async Task Delete(string entityName, string id)
+        public async Task DeleteAsync(string entityName, string id)
         {
             var response = await _http.DeleteAsync(GetUrl(entityName) + "/" + id);
         }
 
-        public async Task Delete<T>(string id) where T : class
-            => await Delete(typeof(T).Name.ToLower(), id);
+        public async Task DeleteAsync<T>(string id) where T : class
+            => await DeleteAsync(typeof(T).Name.ToLower(), id);
 
         private HttpContent GetContent(object obj)
         {
