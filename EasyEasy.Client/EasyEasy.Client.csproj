@@ -6,6 +6,7 @@
     <Description>Client for EasyEasy.io</Description>
     <RepositoryUrl>https://github.com/EasyEasyio/csharp-client</RepositoryUrl>
     <Company>EasyEasy.io</Company>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
