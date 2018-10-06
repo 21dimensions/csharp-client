@@ -48,7 +48,7 @@ namespace EasyEasy.Client
             _http.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
         }
 
-        public Client(string key) : this("http://easyeasy.io/v1/rest", key)
+        public Client(string key) : this("http://easyeasy.io/v1", key)
         {
 
         }

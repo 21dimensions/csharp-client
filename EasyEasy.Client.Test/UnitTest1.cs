@@ -11,7 +11,7 @@ namespace EasyEasy.Client.Test
         [TestMethod]
         public void TestMethod1()
         {
-            var client = new Client("http://localhost:3333", "9013c822-ca97-45ee-8724-4535e959149c");
+            var client = new Client("bc420813-17d9-47fa-9d29-8bd6a1207f8a");
 
             var cat = new Cat()
             {
