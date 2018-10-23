@@ -74,10 +74,10 @@ namespace EasyEasy.Client
 
         public async Task UpdateAsync<T>(T obj) => await UpdateAsync(obj, typeof(T).Name.ToLower());
 
-        public async Task<ItemsCollection<T>> GetAsync<T>(string entityName, object filters) where T:class
+        public async Task<ItemsCollection<T>> GetAsync<T>(string entityName, object query) where T:class
         {
             var filteringStr = String.Join("&",
-                filters.GetType().GetProperties().Select(p => p.Name.ToLower() + "=" + ConvertToString(p.GetValue(filters)).ToString()));
+                query.GetType().GetProperties().Select(p => p.Name.ToLower() + "=" + ConvertToString(p.GetValue(query)).ToString()));
 
             var responseStr = await _http.GetStringAsync(GetUrl(entityName) + "?" + filteringStr);
 
@@ -86,8 +86,8 @@ namespace EasyEasy.Client
             return new ItemsCollection<T>(collectionResponse.items, collectionResponse.total);
         }
 
-        public async Task<ItemsCollection<T>> GetAsync<T>(object filters) where T:class
-            => await GetAsync<T>(typeof(T).Name.ToLower(), filters);
+        public async Task<ItemsCollection<T>> GetAsync<T>(object query) where T:class
+            => await GetAsync<T>(typeof(T).Name.ToLower(), query);
 
         public async Task<T> GetOneAsync<T>(string entityName, string id)
         {
