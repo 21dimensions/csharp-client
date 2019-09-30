@@ -77,7 +77,7 @@ namespace EasyEasy.Client
         public async Task<ItemsCollection<T>> GetAsync<T>(string entityName, object query) where T:class
         {
             var filteringStr = String.Join("&",
-                query.GetType().GetProperties().Select(p => p.Name.ToLower() + "=" + ConvertToString(p.GetValue(query)).ToString()));
+                query.GetType().GetProperties().Select(p => char.ToLowerInvariant(p.Name[0]) + p.Name.Substring(1) + "=" + ConvertToString(p.GetValue(query)).ToString()));
 
             var responseStr = await _http.GetStringAsync(GetUrl(entityName) + "?" + filteringStr);
 
