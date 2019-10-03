@@ -77,7 +77,7 @@ namespace EasyEasy.Client
         public async Task<ItemsCollection<T>> GetAsync<T>(string entityName, object query) where T:class
         {
             var filteringStr = String.Join("&",
-                query.GetType().GetProperties().Select(p => char.ToLowerInvariant(p.Name[0]) + p.Name.Substring(1) + "=" + ConvertToString(p.GetValue(query)).ToString()));
+                query.GetType().GetProperties().Select(p => char.ToLowerInvariant(p.Name[0]) + p.Name.Substring(1) + "=" + ConvertToString(p.GetValue(query))));
 
             var responseStr = await _http.GetStringAsync(GetUrl(entityName) + "?" + filteringStr);
 
@@ -113,10 +113,14 @@ namespace EasyEasy.Client
 
         private string ConvertToString(object obj)
         {
-            if (obj is IFormattable)
-                return (obj as IFormattable).ToString(null, CultureInfo.InvariantCulture);
-            else
-                return obj.ToString();
+            var result = JsonConvert.SerializeObject(obj, _serializationSetting);
+            if (result.StartsWith("\""))
+                result = result.Substring(1);
+
+            if (result.EndsWith("\""))
+                result = result.Substring(0, result.Length - 1);
+
+            return result;
         }
     }
 }
